@@ -141,7 +141,15 @@
                   " || error_exit 'Failed to initialize config file'"
                 ]]
               },
-              "service dynamic-dynamodb start || error_exit 'Failed to start dynamic-dynamodb service. Check /etc/dynamic-dynamodb/logs/service.log'",
+              "for r in us-east-1 us-west-1; do",
+              "  cp /etc/dynamic-dynamodb/dynamic-dynamodb.conf /etc/dynamic-dynamodb/dynamic-dynamodb-$r.conf",
+              "  sed -i'' \"s/us-east-1/$r/\" /etc/dynamic-dynamodb/dynamic-dynamodb-$r.conf",
+              "  sed -i'' \"s/dynamic-dynamodb.log/dynamic-dynamodb-$r.log/\" /etc/dynamic-dynamodb/dynamic-dynamodb-$r.conf",
+              "  cp /etc/init.d/dynamic-dynamodb /etc/init.d/dynamic-dynamodb-$r",
+              "  sed -i'' \"s/dynamic-dynamodb.conf/dynamic-dynamodb-$r.conf/\" /etc/init.d/dynamic-dynamodb-$r",
+              "  sed -i'' \"s/service.log/service-$r.log/\" /etc/init.d/dynamic-dynamodb-$r",
+              "  service dynamic-dynamodb-$r start || error_exit 'Failed to start dynamic-dynamodb-$r service. Check /etc/dynamic-dynamodb/logs/service.log'",
+              "done",
               "log \"Dynamic dynamodb service started\"",
               {
                 "Fn::Join": [ "", [
