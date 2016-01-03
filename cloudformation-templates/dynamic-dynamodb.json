@@ -148,7 +148,9 @@
               "  cp /etc/init.d/dynamic-dynamodb /etc/init.d/dynamic-dynamodb-$r",
               "  sed -i'' \"s/dynamic-dynamodb.conf/dynamic-dynamodb-$r.conf/\" /etc/init.d/dynamic-dynamodb-$r",
               "  sed -i'' \"s/service.log/service-$r.log/\" /etc/init.d/dynamic-dynamodb-$r",
-              "  service dynamic-dynamodb-$r start || error_exit 'Failed to start dynamic-dynamodb-$r service. Check /etc/dynamic-dynamodb/logs/service.log'",
+              "  sed -i'' \"s/NAME=dynamicdynamodb/NAME=dynamicdynamodb-$r/\" /etc/init.d/dynamic-dynamodb-$r",
+              "  sed -i'' \"s/--daemon/--instance $r --daemon/\" /etc/init.d/dynamic-dynamodb-$r",
+              "  service dynamic-dynamodb-$r start || error_exit \"Failed to start dynamic-dynamodb-$r service. Check /etc/dynamic-dynamodb/logs/service-$r.log\"",
               "done",
               "log \"Dynamic dynamodb service started\"",
               {
