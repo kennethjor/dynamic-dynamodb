@@ -68,6 +68,7 @@
       "Properties": {
         "ImageId": { "Fn::FindInMap": [ "Region2AMI", { "Ref": "AWS::Region" }, "64" ] },
         "InstanceType": { "Ref" : "InstanceType" },
+        "SpotPrice": "0.02",
         "KeyName": { "Ref": "KeyPair" },
         "SecurityGroups": [ { "Ref": "SecurityGroup" } ],
         "IamInstanceProfile"  : { "Ref" : "IamInstanceProfile" },
